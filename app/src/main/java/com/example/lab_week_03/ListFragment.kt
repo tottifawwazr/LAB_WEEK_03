@@ -9,6 +9,8 @@ import androidx.navigation.findNavController
 
 class ListFragment : Fragment() {
 
+    companion object { const val COFFEE_ID = "COFFEE_ID" }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -17,34 +19,28 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        // Inflate layout daftar kopi
-        return inflater.inflate(R.layout.fragment_list, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 5 item: tambah cappuccino & mocha
         val coffeeList = listOf<View>(
             view.findViewById(R.id.affogato),
             view.findViewById(R.id.americano),
-            view.findViewById(R.id.latte)
+            view.findViewById(R.id.latte),
+            view.findViewById(R.id.cappuccino),
+            view.findViewById(R.id.mocha)
         )
 
         coffeeList.forEach { coffee ->
-            val fragmentBundle = Bundle().apply {
-                putInt(COFFEE_ID, coffee.id)
-            }
+            val args = Bundle().apply { putInt(COFFEE_ID, coffee.id) }
             coffee.setOnClickListener {
                 coffee.findNavController().navigate(
-                    R.id.coffee_id_action,
-                    fragmentBundle
+                    R.id.coffee_id_action,  // action di nav_graph dari coffeeList -> coffeeDetail
+                    args
                 )
             }
         }
-    }
-
-    companion object {
-        const val COFFEE_ID = "COFFEE_ID"
     }
 }

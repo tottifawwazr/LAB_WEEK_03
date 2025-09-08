@@ -13,5 +13,12 @@
     <string name="latte_title">CAFFE LATTE</string>
     <string name="latte_desc">A tall mild milk coffee about 150-300 ml. Espresso with steamed milk and a little milk foam on top. Serve in a latte glass or a coffee cup. Flavored syrup can be added.</string>
 
+    <string name="cappuccino_title">CAPPUCCINO</string>
+    <string name="cappuccino_desc">A classic coffee made with equal parts espresso and steamed milk, topped with milk foam.</string>
+
+    <string name="mocha_title">MOCHA</string>
+    <string name="mocha_desc">Chocolate-flavored coffee drink made with espresso, steamed milk, and cocoa/syrup.</string>
+
+
     <string name="coffee_list">Coffee List</string>
 </resources>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
@@ -18,18 +19,20 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // inflate layout fragment_detail.xml
-        return inflater.inflate(R.layout.fragment_detail, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_detail, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         coffeeTitle = view.findViewById(R.id.coffee_title)
-        coffeeDesc = view.findViewById(R.id.coffee_desc)
+        coffeeDesc  = view.findViewById(R.id.coffee_desc)
 
-        // ambil argumen dari ListFragment (pakai NavController)
+        // tombol Back khusus (tanpa mengandalkan back sistem)
+        view.findViewById<View>(R.id.btn_back)?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        // ambil argumen dari ListFragment via Navigation
         val coffeeId = arguments?.getInt(COFFEE_ID, 0) ?: 0
         setCoffeeData(coffeeId)
     }
@@ -47,6 +50,14 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             R.id.latte -> {
                 coffeeTitle?.text = getString(R.string.latte_title)
                 coffeeDesc?.text  = getString(R.string.latte_desc)
+            }
+            R.id.cappuccino -> {
+                coffeeTitle?.text = getString(R.string.cappuccino_title)
+                coffeeDesc?.text  = getString(R.string.cappuccino_desc)
+            }
+            R.id.mocha -> {
+                coffeeTitle?.text = getString(R.string.mocha_title)
+                coffeeDesc?.text  = getString(R.string.mocha_desc)
             }
         }
     }
