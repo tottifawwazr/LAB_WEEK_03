@@ -7,19 +7,29 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(R.layout.fragment_detail) {
 
-    private val coffeeTitle: TextView? get() = view?.findViewById(R.id.coffee_title)
-    private val coffeeDesc : TextView? get() = view?.findViewById(R.id.coffee_desc)
+    companion object { const val COFFEE_ID = "COFFEE_ID" }
+
+    private var coffeeTitle: TextView? = null
+    private var coffeeDesc: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_detail, container, false)
+    ): View? {
+        // inflate layout fragment_detail.xml
+        return inflater.inflate(R.layout.fragment_detail, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        coffeeTitle = view.findViewById(R.id.coffee_title)
+        coffeeDesc = view.findViewById(R.id.coffee_desc)
+
+        // ambil argumen dari ListFragment (pakai NavController)
         val coffeeId = arguments?.getInt(COFFEE_ID, 0) ?: 0
         setCoffeeData(coffeeId)
     }
@@ -38,14 +48,6 @@ class DetailFragment : Fragment() {
                 coffeeTitle?.text = getString(R.string.latte_title)
                 coffeeDesc?.text  = getString(R.string.latte_desc)
             }
-        }
-    }
-
-    companion object {
-        private const val COFFEE_ID = "COFFEE_ID"
-
-        fun newInstance(coffeeId: Int) = DetailFragment().apply {
-            arguments = Bundle().apply { putInt(COFFEE_ID, coffeeId) }
         }
     }
 }
