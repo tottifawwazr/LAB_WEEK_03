@@ -1,11 +1,11 @@
 package com.example.lab_week_03
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentContainerView
 
 class MainActivity : AppCompatActivity(), ListFragment.CoffeeListener {
 
@@ -14,19 +14,30 @@ class MainActivity : AppCompatActivity(), ListFragment.CoffeeListener {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // optional: insets
-        val root = findViewById<View?>(R.id.main) ?: window.decorView
+        // (opsional) insets biar konten tidak ketutup status bar
+        val root = findViewById<FragmentContainerView>(R.id.fragment_container)
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
             insets
         }
+
+        // pertama kali: tampilkan ListFragment ke dalam container
+        if (savedInstanceState == null) {
+            val listFragment = ListFragment()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, listFragment)
+                .commit()
+        }
     }
 
-    // dipanggil saat item list diklik
+    // dipanggil saat item di ListFragment diklik
     override fun onSelected(id: Int) {
-        val detail = supportFragmentManager
-            .findFragmentById(R.id.fragment_detail) as? DetailFragment
-        detail?.setCoffeeData(id)
+        // buat DetailFragment baru pakai factory + argumen
+        val detailFragment = DetailFragment.newInstance(id)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, detailFragment)
+            .addToBackStack(null) // abaikan warning "String expected" sesuai modul
+            .commit()
     }
 }

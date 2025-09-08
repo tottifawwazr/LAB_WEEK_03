@@ -8,25 +8,21 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class DetailFragment : Fragment() {
-    // (boleh ada arg template param1/param2, biarkan)
-    private var param1: String? = null
-    private var param2: String? = null
 
-    // akses view secara lazy sesuai modul
-    private val coffeeTitle: TextView?
-        get() = view?.findViewById(R.id.coffee_title)
-    private val coffeeDesc: TextView?
-        get() = view?.findViewById(R.id.coffee_desc)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val coffeeTitle: TextView? get() = view?.findViewById(R.id.coffee_title)
+    private val coffeeDesc : TextView? get() = view?.findViewById(R.id.coffee_desc)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_detail, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val coffeeId = arguments?.getInt(COFFEE_ID, 0) ?: 0
+        setCoffeeData(coffeeId)
+    }
 
     fun setCoffeeData(id: Int) {
         when (id) {
@@ -42,6 +38,14 @@ class DetailFragment : Fragment() {
                 coffeeTitle?.text = getString(R.string.latte_title)
                 coffeeDesc?.text  = getString(R.string.latte_desc)
             }
+        }
+    }
+
+    companion object {
+        private const val COFFEE_ID = "COFFEE_ID"
+
+        fun newInstance(coffeeId: Int) = DetailFragment().apply {
+            arguments = Bundle().apply { putInt(COFFEE_ID, coffeeId) }
         }
     }
 }
